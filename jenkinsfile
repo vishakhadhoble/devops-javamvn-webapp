@@ -4,31 +4,31 @@ pipeline {
 
 
 	environment {	
-		DOCKERHUB_CREDENTIALS=credentials('dockerloginid')
+		DOCKERHUB_CREDENTIALS=credentials('docker_id')
 	}
 	
     stages {
-        stage('SCM_Checkout') {
+        stage('SCM_Checkout ') {
             steps {
                 echo 'Perform SCM Checkout'
-				git 'https://github.com/Edu-DCP-May20/devops-java-webapp.git'
+                git 'https://github.com/vishakhadhoble/devops-javamvn-webapp.git'
             }
         }
-        stage('Application_Build') {
+        stage('Application Build') {
             steps {
-                echo 'Perform Maven Build'
-				sh 'mvn clean package'
+                echo 'Perform Application Build'
+                sh 'mvn clean package'
             }
         }
-        stage('Build Docker Image') {
+         stage('Build Docker Image') {
             steps {
 				sh 'docker version'
-				sh "docker build -t loksaieta/loksai-eta-app:${BUILD_NUMBER} ."
+				sh "docker build -t vishakhadhoble/loksai-eta-app:${BUILD_NUMBER} ."
 				sh 'docker image list'
-				sh "docker tag loksaieta/loksai-eta-app:${BUILD_NUMBER} loksaieta/loksai-eta-app:latest"
+				sh "docker tag vishakhadhoble/loksai-eta-app:${BUILD_NUMBER} vishakhadhoble/loksai-eta-app:latest"
             }
         }
-		stage('Login2DockerHub') {
+        stage('Login2DockerHub') {
 
 			steps {
 				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
@@ -36,7 +36,7 @@ pipeline {
 		}
 		stage('Publish_to_Docker_Registry') {
 			steps {
-				sh "docker push loksaieta/loksai-eta-app:latest"
+				sh "docker push vishakhadhoble/loksai-eta-app:latest"
 			}
 		}
 		stage('Deploy to Kubernetes') {
