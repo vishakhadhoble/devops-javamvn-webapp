@@ -23,9 +23,9 @@ pipeline {
          stage('Build Docker Image') {
             steps {
 				sh 'docker version'
-				sh "docker build -t vishakhadhoble/loksai-eta-app:${BUILD_NUMBER} ."
+				sh "docker build -t vishakhadhoble/vish-app:${BUILD_NUMBER} ."
 				sh 'docker image list'
-				sh "docker tag vishakhadhoble/loksai-eta-app:${BUILD_NUMBER} vishakhadhoble/loksai-eta-app:latest"
+				sh "docker tag vishakhadhoble/vish-app:${BUILD_NUMBER} vishakhadhoble/vish-app:latest"
             }
         }
         stage('Login2DockerHub') {
@@ -36,7 +36,7 @@ pipeline {
 		}
 		stage('Publish_to_Docker_Registry') {
 			steps {
-				sh "docker push vishakhadhoble/loksai-eta-app:latest"
+				sh "docker push vishakhadhoble/vish-app:latest"
 			}
 		}
 		stage('Deploy to Kubernetes') {
